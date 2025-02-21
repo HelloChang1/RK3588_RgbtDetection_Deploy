@@ -1,0 +1,1 @@
+python modify_onnx.py -i /workspace/chang/rknn_rgbt/model/rgbt_ca_rtdetrv2_ours_add_original_op19.onnx -o "/workspace/chang/rknn_rgbt/convert/utils/"
