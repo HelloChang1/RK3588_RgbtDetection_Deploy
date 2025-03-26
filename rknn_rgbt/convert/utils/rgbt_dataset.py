@@ -67,7 +67,7 @@ class RGBTDataloader(Dataset):
                     raise FileNotFoundError(f'{prefix}{p} does not exist')
             
             # 根据文件名中的后缀，将图像路径分为 RGB 图像文件和 Thermal 图像文件，并将它们排序。此步骤使得图像能够被配对。
-            # yuhang: Read RGB images and infrared images separately according to the suffix
+            # Read RGB images and infrared images separately according to the suffix
             # self.rgb_files = sorted(x.replace('/', os.sep) for x in f if '_rgb' in x.split('.')[0]) 
             # self.t_files = sorted(x.replace('/', os.sep) for x in f if '_t' in x.split('.')[0]) 
             self.rgb_files = sorted(x.replace('/', os.sep) for x in f if x.endswith('_rgb.png')) 
@@ -76,7 +76,7 @@ class RGBTDataloader(Dataset):
             # self.im_files = sorted([x for x in f if x.suffix[1:].lower() in IMG_FORMATS])  # pathlib
             assert self.rgb_files, f'{prefix}No rgb images found'
             assert self.t_files, f'{prefix}No t images found'
-            # yuhang: Check if the images are paired
+            # Check if the images are paired
             assert len(self.rgb_files) == len(self.t_files), f'{prefix}rgb images number is not equal t images {len(self.rgb_files)} != {len(self.t_files)}'
             for index in range(len(self.rgb_files)):
                assert os.path.basename(self.rgb_files[index]).split('_rgb')[0] == os.path.basename(self.t_files[index]).split('_t')[0], f'{prefix} index:{index}'
@@ -114,7 +114,7 @@ class RGBTDataloader(Dataset):
         self.labels = list(labels)
         self.shapes = np.array(shapes)
 
-        # yuhang: Check if the images in cache are paired
+        # Check if the images in cache are paired
         self.rgb_files = [x for x in cache.keys() if '_rgb' in x.split('/')[-1]]  # update
         self.t_files = [x for x in cache.keys() if '_t' in x.split('/')[-1]]
         self.label_files = img2label_paths([x for x in cache.keys() if '_t' in x.split('/')[-1]])  # update
@@ -122,7 +122,7 @@ class RGBTDataloader(Dataset):
             assert os.path.basename(self.rgb_files[index]).split('_rgb')[0] == os.path.basename(self.t_files[index]).split('_t')[0], f'{prefix} index:{index}'
             
         # Filter images
-        # yuhang: Filter RGB and infrared images separately
+        # Filter RGB and infrared images separately
         if min_items:
             include = np.array([len(x) >= min_items for x in self.labels]).nonzero()[0].astype(int)
             LOGGER.info(f'{prefix}{n - len(include)}/{n} images filtered from dataset')
@@ -157,7 +157,7 @@ class RGBTDataloader(Dataset):
                 self.labels[i][:, 0] = 0
 
         # Rectangular Training
-        # yuhang: Rectangular RGB and infrared images separately
+        # Rectangular RGB and infrared images separately
         if self.rect:
             # Sort by aspect ratio
             s = self.shapes[0:n]  # wh
@@ -193,7 +193,7 @@ class RGBTDataloader(Dataset):
         nm, nf, ne, nc, msgs = 0, 0, 0, 0, []  # number missing, found, empty, corrupt, messages
         desc = f'{prefix}Scanning {path.parent / path.stem}...'
 
-        # yuhang: Verify RGB and infrared images separately
+        # Verify RGB and infrared images separately
         with Pool(NUM_THREADS) as pool:
             rgb_pbar = tqdm(pool.imap(verify_image_label, zip(self.rgb_files, self.label_files, repeat(prefix))),
                         desc=desc,
@@ -260,7 +260,7 @@ class RGBTDataloader(Dataset):
         hyp = self.hyp
         mosaic = self.mosaic and random.random() < hyp['mosaic']
 
-        # yuhang: In data augmentation, RGB and infrared images need to be enhanced in pairs
+        # In data augmentation, RGB and infrared images need to be enhanced in pairs
         # Load image
         img_rgb, _, _ = self.load_image(index, imtype='rgb')
         img_t, (h0, w0), (h, w) = self.load_image(index, imtype='t')

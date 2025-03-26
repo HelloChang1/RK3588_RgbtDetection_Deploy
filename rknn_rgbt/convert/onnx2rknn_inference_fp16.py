@@ -25,9 +25,9 @@ if __name__ == '__main__':
 
 
     PLATFORM="rk3588"
-    ONNX_PATH="rknn_rgbt/model/rgbt_ca_rtdetrv2_ours_add_original_op19_three_outputs_conv.onnx"
-    RKNN_PATH="/rknn_rgbt/model/rgbt_ca_rtdetrv2_ours_add_original_op19_three_outputs_conv_fp16.rknn"
-    val_path="rknn_rgbt/convert/val/images"
+    ONNX_PATH="/workspace/chang/rknn_rgbt/model/rgbt_ca_rtdetrv2_ours_add_original_op19_three_outputs_conv.onnx"
+    RKNN_PATH="/workspace/chang/rknn_rgbt/model/rgbt_ca_rtdetrv2_ours_add_original_op19_three_outputs_conv_fp16.rknn"
+    val_path="/workspace/chang/rknn_rgbt/convert/val/images"
     # IMG_SIZE=640
     Acc_analysis=False
     Result_comparsion=False
@@ -43,13 +43,13 @@ if __name__ == '__main__':
     RGBT_ANCHORS=[[10,13, 16,30, 33,23], [30,61, 62,45, 59,119], [116,90, 156,198, 373,326]]
     # set inputs
     print('--> img_rgb and img_t load and resize')
-    img_rgb = cv2.imread('rknn_rgbt/convert/val/images/05160004_rgb.png')
+    img_rgb = cv2.imread('/workspace/chang/rknn_rgbt/convert/val/images/05160004_rgb.png')
     img_rgb = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2RGB)
     img_rgb_plot=img_rgb
     img_rgb = letterbox(img_rgb, new_shape=(640, 640))[0]  # img_rgb = cv2.resize(img_rgb, (IMG_SIZE, IMG_SIZE))
     resized_img_rgb=img_rgb
     img_rgb = np.expand_dims(img_rgb, axis=0)  # Shape will be (1, IMG_SIZE, IMG_SIZE, 3)
-    img_t = cv2.imread('rknn_rgbt/convert/val/images/05160004_t.png')
+    img_t = cv2.imread('/workspace/chang/rknn_rgbt/convert/val/images/05160004_t.png')
     img_t = cv2.cvtColor(img_t, cv2.COLOR_BGR2RGB)
     img_t_plot=img_t
     # img_t = cv2.resize(img_t, (IMG_SIZE, IMG_SIZE))
@@ -68,6 +68,7 @@ if __name__ == '__main__':
     print('--> Config model')
     rknn.config(mean_values=[[0,0,0],[0,0,0]],
                 std_values=[[255,255,255],[255,255,255]],
+                # model_pruning=True,
                 # std_values=[[1,1,1],[1,1,1]],
                 target_platform=PLATFORM)
     print('done')

@@ -1,4 +1,5 @@
 /rknn_yolov5_demo/
+/nanotrack-c-rk3588/
 /data/
 rknn_rgbt/.vscode/*
 rknn_rgbt/build/build_RK3588_linux_aarch64_Release/
@@ -9,6 +10,10 @@ rknn_rgbt/convert/utils/__pycache__/
 rknn_rgbt/model_temp/
 rknn_rgbt/convert/val/images/*
 rknn_rgbt/convert/val/labels/*
+rknn_rgbt/include/rgbt_postprocess.h
+rknn_rgbt/src/rgbt_main.cc
+rknn_rgbt/src/rgbt_postprocess.cc
+/workspace/chang/rknn_rgbt/README_CN.md
 rknn_rgbt/install/*
 rknn_rgbt/test/*
 *.cache
@@ -19,5 +24,6 @@ rknn_rgbt/test/*
 *.txt
 !rknn_rgbt/CMakeLists.txt
 *.jpg
+*.png
 *.onnx
 *.rknn
